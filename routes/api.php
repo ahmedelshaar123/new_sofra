@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MainController;
@@ -25,4 +26,6 @@ Route::group(['prefix' => 'v1'], function (){
     Route::get('settings', [MainController::class, 'settings']);
     Route::get('static-pages', [MainController::class, 'staticPages']);
     Route::Post('create-contact', [MainController::class, 'createContact']);
+    Route::Post('register-token', [AuthController::class, 'registerToken']);
+    Route::Post('remove-token', [AuthController::class, 'removeToken']);
 });
