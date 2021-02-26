@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Client\RegisterRequest;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\NewPasswordRequest;
+use App\Http\Requests\Api\RegisterTokenRequest;
+use App\Http\Requests\Api\RemoveTokenRequest;
 use App\Http\Requests\Api\ResetPasswordRequest;
 use App\Mail\ResetPassword;
 use App\Models\Client;
+use App\Models\Token;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -41,6 +44,28 @@ class AuthController extends Controller
         }
     }
 
+    public function profile(Request $request){
+        $request->user()->update($request->except('password', 'path'));
+
+        if($request->has('password')){
+            $request->user()->password = bcrypt($request->password);
+            $request->user()->save();
+        }
+
+        if($request->hasFile('path')){
+            $path = public_path();
+            $destinationPath = $path . '/uploads/clients/'; // upload path
+            $image = $request->file('path');
+            $extension = $image->getClientOriginalExtension(); // getting image extension
+            $name = time() . '' . rand(11111, 99999) . '.' . $extension; // renaming image
+            $image->move($destinationPath, $name); // uploading file to given path
+            if (file_exists($request->user()->photo))
+                unlink($request->user()->photo->path);
+            $request->user()->update(['path' => 'uploads/clients/' . $name]);
+        }
+        return response()->json(['client'=>$request->user()->fresh()->load('region, region.city')], 200);
+    }
+
     public function resetPassword(ResetPasswordRequest $request) {
         $client = Client::where('email', $request->email)->first();
         if($client){
@@ -64,6 +89,17 @@ class AuthController extends Controller
         }else{
             return response()->json('البيانات غير صحيحة', 400);
         }
+    }
+
+    public function registerToken(RegisterTokenRequest $request) {
+        $request->merge(['tokenable_id' => $request->user()->id, 'tokenable_type' => 'App\Models\Client']);
+        $token = $request->user()->tokens()->create($request->all());
+        return response()->json($token->load('client'), 200);
+    }
+
+    public function removeToken(RemoveTokenRequest $request){
+        Token::where('token', $request->token)->delete();
+        return response()->json("تم الحذف بنجاح", 200);
     }
 
 }
