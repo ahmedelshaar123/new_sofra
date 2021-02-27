@@ -65,7 +65,7 @@ class AuthController extends Controller
             $name = time() . '' . rand(11111, 99999) . '.' . $extension; // renaming image
             $image->move($destinationPath, $name); // uploading file to given path
             $request->user()->photo()->create(['path' => 'uploads/clients/' . $name,
-                    'tokenable_id' => $request->user()->id, 'tokenable_type' => 'App\Models\Client']);
+                    'photoable_id' => $request->user()->id, 'photoable_type' => 'App\Models\Client']);
         }
         return response()->json(['client'=>$request->user()->fresh()->load('region, region.city', 'photo')], 200);
     }

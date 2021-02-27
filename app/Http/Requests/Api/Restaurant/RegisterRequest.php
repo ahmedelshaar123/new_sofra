@@ -25,9 +25,9 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|min:2|max:30',
-            'email' => 'required|email|unique:clients,email',
-            'phone' =>'required|digits_between:10,13|unique:clients,phone',
-            'whatsapp' =>'required|digits_between:10,13|unique:clients,whatsapp',
+            'email' => 'required|email|unique:restaurants,email',
+            'phone' =>'required|digits_between:10,13|unique:restaurants,phone',
+            'whatsapp' =>'required|digits_between:10,13|unique:restaurants,whatsapp',
             'password' =>'required|min:6',
             'password_confirmation' =>'required|same:password',
             'min_price' =>'required|numeric|min:1',
