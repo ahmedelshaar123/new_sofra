@@ -11,6 +11,7 @@ use App\Mail\ResetPassword;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -61,7 +62,7 @@ class AuthController extends Controller
         }
     }
 
-    public function newPassword(NewPassworrestaurantdRequest $request) {
+    public function newPassword(NewPasswordRequest $request) {
         $restaurant = Restaurant::where('pin_code', $request->pin_code)->where('pin_code', '!=', null)->first();
         if($restaurant) {
             $restaurant->password = bcrypt($request->password);
