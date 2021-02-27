@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api\Restaurant;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\NewPasswordRequest;
+use App\Http\Requests\Api\ResetPasswordRequest;
 use App\Http\Requests\Api\Restaurant\RegisterRequest;
+use App\Mail\ResetPassword;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -46,24 +49,24 @@ class AuthController extends Controller
     }
 
     public function resetPassword(ResetPasswordRequest $request) {
-        $client = Client::where('email', $request->email)->first();
-        if($client){
+        $restaurant = Restaurant::where('email', $request->email)->first();
+        if($restaurant){
             $code = Str::random(6);
-            $client->update(['pin_code' => $code]);
-            Mail::to($client->email)
-                ->send(new ResetPassword($client->pin_code));
+            $restaurant->update(['pin_code' => $code]);
+            Mail::to($restaurant->email)
+                ->send(new ResetPassword($restaurant->pin_code));
             return response()->json("برجاء فحص بريدك", 200);
         }else{
             return response()->json("البيانات غير صحيحة", 400);
         }
     }
 
-    public function newPassword(NewPasswordRequest $request) {
-        $client = Client::where('pin_code', $request->pin_code)->where('pin_code', '!=', null)->first();
-        if($client) {
-            $client->password = bcrypt($request->password);
-            $client->pin_code = null;
-            $client->save();
+    public function newPassword(NewPassworrestaurantdRequest $request) {
+        $restaurant = Restaurant::where('pin_code', $request->pin_code)->where('pin_code', '!=', null)->first();
+        if($restaurant) {
+            $restaurant->password = bcrypt($request->password);
+            $restaurant->pin_code = null;
+            $restaurant->save();
             return response()->json('تم تغيير كلمة السر بنجاح', 200);
         }else{
             return response()->json('البيانات غير صحيحة', 400);
