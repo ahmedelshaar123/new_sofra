@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="f1b6f609-43f6-4370-b80d-c238b70be9e3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/AuthController.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/Client/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/Client/AuthController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/Client/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/Client/MainController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/Api/Client/ProfileRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Api/Client/ProfileRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/client.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/client.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/restaurant.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/restaurant.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +168,8 @@
       <updated>1613393457557</updated>
       <workItem from="1613393460546" duration="4752000" />
       <workItem from="1614249630471" duration="7252000" />
-      <workItem from="1614343009764" duration="1013000" />
+      <workItem from="1614343009764" duration="4244000" />
+      <workItem from="1614443914985" duration="352000" />
     </task>
     <servers />
   </component>

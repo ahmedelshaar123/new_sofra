@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Client\AuthController;
+use App\Http\Controllers\Api\Client\MainController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,8 +25,8 @@ Route::group(['prefix' => 'v1'], function (){
     Route::post('login', [AuthController::class, 'login']);
     Route::post('reset-password', [AuthController::class, 'resetPassword']);
     Route::post('new-password', [AuthController::class, 'newPassword']);
-    Route::post('create-contact', [MainController::class, 'createContact']);
-    Route::get('governorates', [MainController::class, 'getGovernorates']);
+    Route::get('filter-restaurant', [MainController::class, 'filterRestaurant']);
+    Route::get('my-notifications', [MainController::class, 'myNotifications']);
     Route::get('cities', [MainController::class, 'getCities']);
     Route::get('categories', [MainController::class, 'getCategories']);
     Route::get('articles', [MainController::class, 'getArticles']);
@@ -34,7 +35,7 @@ Route::group(['prefix' => 'v1'], function (){
     Route::get('donation-requests', [MainController::class, 'getDonationRequests']);
     Route::get('settings', [MainController::class, 'getSettings']);
     Route::group(['middleware'=>'auth:client'], function() {
-        Route::post('update-profile', [AuthController::class, 'updateProfile']);
+        Route::post('profile', [AuthController::class, 'profile']);
         Route::post('register-token', [AuthController::class, 'registerToken']);
         Route::post('remove-token', [AuthController::class, 'removeToken']);
         Route::post('toggle-favourites', [MainController::class, 'toggleFavourites']);

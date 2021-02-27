@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Client\ProfileRequest;
 use App\Http\Requests\Api\Client\RegisterRequest;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\NewPasswordRequest;
@@ -44,7 +45,7 @@ class AuthController extends Controller
         }
     }
 
-    public function profile(Request $request){
+    public function profile(ProfileRequest $request){
         $request->user()->update($request->except('password', 'path'));
 
         if($request->has('password')){
@@ -53,17 +54,20 @@ class AuthController extends Controller
         }
 
         if($request->hasFile('path')){
+            if ($request->user()->photo()->count()) {
+                unlink($request->user()->photo->path);
+                $request->user()->photo()->delete();
+            }
             $path = public_path();
-            $destinationPath = $path . '/uploads/clients/'; // upload path
+            $destinationPath = $path . '/uploads/clients'; // upload path
             $image = $request->file('path');
             $extension = $image->getClientOriginalExtension(); // getting image extension
             $name = time() . '' . rand(11111, 99999) . '.' . $extension; // renaming image
             $image->move($destinationPath, $name); // uploading file to given path
-            if (file_exists($request->user()->photo))
-                unlink($request->user()->photo->path);
-            $request->user()->update(['path' => 'uploads/clients/' . $name]);
+            $request->user()->photo()->create(['path' => 'uploads/clients/' . $name,
+                    'tokenable_id' => $request->user()->id, 'tokenable_type' => 'App\Models\Client']);
         }
-        return response()->json(['client'=>$request->user()->fresh()->load('region, region.city')], 200);
+        return response()->json(['client'=>$request->user()->fresh()->load('region, region.city', 'photo')], 200);
     }
 
     public function resetPassword(ResetPasswordRequest $request) {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Restaurant\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
